@@ -21,7 +21,22 @@ public class CSV
     return result;
   }
 
-  private static short[][] testImages() throws Exception
+  public static short[] trainingAnswers() throws Exception
+  {
+    BufferedReader reader = new BufferedReader(new FileReader("data/train.csv"));
+    short[] result = new short[42000];
+
+    reader.readLine(); // Get rid of header
+    for(int i = 0; i < result.length; i++)
+    {
+      String line = reader.readLine();
+      result[i] = Short.parseShort(line.substring(0, 1));
+    }
+
+    return result;
+  }
+
+  public static short[][] testImages() throws Exception
   {
     BufferedReader reader = new BufferedReader(new FileReader("data/test.csv"));
     short[][] result = new short[28000][784];
@@ -40,9 +55,10 @@ public class CSV
   public static void main(String[] args) throws Exception
   {
     short[][] training = trainingImages();
+    short[] trainingAnswers = trainingAnswers();
     short[][] test = testImages();
 
-    Dashboard dashboard = new Dashboard(training, test);
+    Dashboard dashboard = new Dashboard(training, trainingAnswers, test);
     dashboard.showDashboard();
   }
 }

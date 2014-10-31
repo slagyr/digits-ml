@@ -1,12 +1,14 @@
 package digits;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Dashboard
-{
+{;
   private JPanel dashboardPanel;
   private JButton nextButton;
   private JButton previousButton;
@@ -17,15 +19,20 @@ public class Dashboard
   private JPanel optionPanel;
   private JPanel labelPanel;
   private JPanel buttonPanel;
+  private JLabel answerLabel;
+  private JLabel guessLabel;
+  private JSlider imageSlider;
 
   private final short[][] trainData;
+  private final short[] trainAnswers;
   private final short[][] testData;
   private short[][] currentImageSet;
   private int currentImageIndex = 0;
 
-  public Dashboard(short[][] trainData, short[][] testData)
+  public Dashboard(short[][] trainData, short[] trainAnswers, short[][] testData)
   {
     this.trainData = trainData;
+    this.trainAnswers = trainAnswers;
     this.testData = testData;
   }
 
@@ -35,7 +42,10 @@ public class Dashboard
     frame.setContentPane(dashboardPanel);
     frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
-    imageNumberLabel.setText("0");
+    imageNumberLabel.setText("-");
+    previousButton.setEnabled(false);
+    nextButton.setEnabled(false);
+    imageSlider.setEnabled(false);
 
     trainRadioButton.addActionListener(new ActionListener()
     {
@@ -70,8 +80,19 @@ public class Dashboard
       }
     });
 
+    imageSlider.addChangeListener(new ChangeListener()
+    {
+      @Override
+      public void stateChanged(ChangeEvent e)
+      {
+        if(imageSlider.isEnabled())
+          loadImage(imageSlider.getValue());
+      }
+    });
+
     frame.setLocation(100, 100);
     frame.pack();
+    frame.setSize(frame.getWidth() * 2, frame.getHeight());
     frame.setVisible(true);
 
 //    trainRadioButton.setSelected(true);
@@ -81,6 +102,9 @@ public class Dashboard
   private void loadImageSet(short[][] data)
   {
     currentImageSet = data;
+    imageSlider.setMinimum(0);
+    imageSlider.setMaximum(data.length - 1);
+    imageSlider.setEnabled(true);
     if(currentImageIndex > data.length)
       loadImage(data.length - 1);
     else
@@ -103,13 +127,18 @@ public class Dashboard
       graphics.fillRect(x, y, 4, 4);
     }
 
+    if(currentImageSet == trainData)
+      answerLabel.setText("" + trainAnswers[i]);
+    else
+      answerLabel.setText("?");
     imageNumberLabel.setText("" + (i + 1));
+    imageSlider.setValue(i);
     previousButton.setEnabled(i > 0);
     nextButton.setEnabled(i < (currentImageSet.length - 1));
   }
 
   public static void main(String[] args)
   {
-    new Dashboard(new short[10][10], new short[5][5]).showDashboard();
+    new Dashboard(new short[10][10], new short[10], new short[5][5]).showDashboard();
   }
 }
