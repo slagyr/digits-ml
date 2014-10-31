@@ -5,18 +5,18 @@
 (defn- load-training-data []
   (println "loading training data...")
   (let [data (data/training-data)]
-    (to-array-2d (map second data))))
+    [(into-array Short/TYPE (map first data))
+     (into-array (map second data))]))
 
 (defn- load-testing-data []
   (println "loading testing data...")
   (let [data (data/test-data)]
-    (to-array-2d data)))
+    (into-array data)))
 
 (defn -main []
-  (let [training (load-training-data)
+  (let [[answers training] (load-training-data)
         testing (load-testing-data)
-        dashboard (Dashboard. training testing)]
-    (println "opening dashboard...")
+        dashboard (Dashboard. training answers testing)]
     (.showDashboard dashboard)))
 
 (-main)

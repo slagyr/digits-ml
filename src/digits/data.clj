@@ -12,12 +12,12 @@
   (let [lines (rest (lines (io/reader "data/train.csv")))
         rows (map #(.split % ",") lines)]
     (map
-      (fn [[answer & image]] (list (->i answer) (into-array Integer/TYPE (map ->i image))))
+      (fn [[answer & image]] (list (->i answer) (into-array Short/TYPE (map ->i image))))
       rows)))
 
 (defn test-data []
   (let [lines (rest (lines (io/reader "data/test.csv")))
         rows (map #(.split % ",") lines)]
     (map
-      #(into-array Integer/TYPE (map ->i %))
+      #(into-array Short/TYPE (map ->i %))
       rows)))
