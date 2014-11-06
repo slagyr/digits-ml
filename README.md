@@ -2,6 +2,10 @@
 
 Machine Learning Problem from Kaggle.  https://www.kaggle.com/c/digit-recognizer
 
+## Setup
+
+Download csv data files from https://www.kaggle.com/c/digit-recognizer/data into `./data` directory.
+
 ## GUI
 
     lein run
