@@ -18,13 +18,24 @@
 (defn create-digit-dataset [data]
   (-> (ds/make-dataset "digit"
                        [{:class [:0 :1 :2 :3 :4 :5 :6 :7 :8 :9]}
-                        :ink-weight]
+                        :ink-weight
+                        :transition-count]
                        data)
       (ds/dataset-set-class 0)))
 
+(defn count-transitions [image]
+  (loop [n 0 ink? false data image]
+    (if (empty? data)
+      n
+      (if (> (first data) 0)
+        (if ink?
+          (recur n true (rest data))
+          (recur (inc n) true (rest data)))
+        (recur n false (rest data))))))
+
 (defn ink-weight [weights] (apply + weights))
 
-(defn ->instance [answer image] [(keyword (str answer)) (ink-weight image)])
+(defn ->instance [answer image] [(keyword (str answer)) (ink-weight image) (count-transitions image)])
 
 (defn ->instances [answers images] (map ->instance answers images))
 
