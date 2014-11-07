@@ -18,5 +18,3 @@
         testing (load-testing-data)
         dashboard (Dashboard. training answers testing)]
     (.showDashboard dashboard)))
-
-(-main)
