@@ -58,7 +58,7 @@ public class CSV
     short[] trainingAnswers = trainingAnswers();
     short[][] test = testImages();
 
-    Dashboard dashboard = new Dashboard(training, trainingAnswers, test);
+    Dashboard dashboard = new Dashboard(training, trainingAnswers, test, new RandomGuesser());
     dashboard.showDashboard();
   }
 }
