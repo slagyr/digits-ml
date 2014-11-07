@@ -1,6 +1,7 @@
 (ns digits.core
+  (:import (digits RandomGuesser DigitGuesser))
   (:require [digits.data :as data])
-  (:import [digits Dashboard]))
+  (:import [digits Dashboard RandomGuesser DigitGuesser]))
 
 (defn- load-training-data []
   (println "loading training data...")
@@ -16,5 +17,6 @@
 (defn -main []
   (let [[answers training] (load-training-data)
         testing (load-testing-data)
-        dashboard (Dashboard. training answers testing)]
+        guesser (reify DigitGuesser (guess [_ d] (rand 10)))
+        dashboard (Dashboard. training answers testing guesser)]
     (.showDashboard dashboard)))

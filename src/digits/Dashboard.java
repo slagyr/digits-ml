@@ -26,14 +26,16 @@ public class Dashboard
   private final short[][] trainData;
   private final short[] trainAnswers;
   private final short[][] testData;
+  private final DigitGuesser guesser;
   private short[][] currentImageSet;
   private int currentImageIndex = 0;
 
-  public Dashboard(short[][] trainData, short[] trainAnswers, short[][] testData)
+  public Dashboard(short[][] trainData, short[] trainAnswers, short[][] testData, DigitGuesser guesser)
   {
     this.trainData = trainData;
     this.trainAnswers = trainAnswers;
     this.testData = testData;
+    this.guesser = guesser;
   }
 
   public void showDashboard()
@@ -131,6 +133,9 @@ public class Dashboard
       answerLabel.setText("" + trainAnswers[i]);
     else
       answerLabel.setText("?");
+
+    guessLabel.setText("" + guesser.guess(image));
+
     imageNumberLabel.setText("" + (i + 1));
     imageSlider.setValue(i);
     previousButton.setEnabled(i > 0);
@@ -139,7 +144,7 @@ public class Dashboard
 
   public static void main(String[] args)
   {
-    new Dashboard(new short[10][10], new short[10], new short[5][5]).showDashboard();
+    new Dashboard(new short[10][10], new short[10], new short[5][5], new RandomGuesser()).showDashboard();
   }
 
   {
