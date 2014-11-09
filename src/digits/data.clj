@@ -19,6 +19,8 @@
   (with-open [ois (java.io.ObjectInputStream. (java.io.FileInputStream. "data/train.ser"))]
     (.readObject ois)))
 
+(def training-data (memoize serialized-training-data))
+
 (defn csv-test-data []
   (let [lines (rest (lines (io/reader "data/test.csv")))
         rows (map #(.split % ",") lines)]
