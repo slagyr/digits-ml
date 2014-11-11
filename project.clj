@@ -8,4 +8,4 @@
   :test-paths ["spec"]
   :java-source-paths ["src"]
 
-  :main digits.core)
+  :main digits.main)

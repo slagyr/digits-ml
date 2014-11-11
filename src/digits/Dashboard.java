@@ -33,6 +33,7 @@ public class Dashboard
   private final DigitGuesser guesser;
   private short[][] currentImageSet;
   private int currentImageIndex = 0;
+  private boolean loadingImage;
 
   public Dashboard(short[][] trainData, short[] trainAnswers, short[][] testData, DigitGuesser guesser)
   {
@@ -119,6 +120,9 @@ public class Dashboard
 
   private void loadImage(int i)
   {
+    if(loadingImage)
+      return;
+    loadingImage = true;
     currentImageIndex = i;
 
     short[] image = currentImageSet[currentImageIndex];
@@ -144,6 +148,7 @@ public class Dashboard
     imageSlider.setValue(i);
     previousButton.setEnabled(i > 0);
     nextButton.setEnabled(i < (currentImageSet.length - 1));
+    loadingImage = false;
   }
 
   public static void main(String[] args)
